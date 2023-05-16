@@ -1,15 +1,331 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Montando o Lanche</title>
 
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+
     <!-- VUE -->
     <script src="./vue.js"></script>
 </head>
+
 <body>
-    
+
+    <!-- As a heading -->
+    <nav class="navbar navbar-light bg-light">
+        <div class="container">
+            <span class="navbar-brand mb-0 h1">Monte o seu Lanche</span>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+
+        <div id="app">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="row mt-2">
+                        <div class="col">
+                            <img :src="pao[0]" alt="pao">
+                            <img :src="alface" alt="alface">
+                            <img :src="ketchup" alt="ketchup">
+                            <img :src="maionese" alt="maionese">
+                            <img :src="mostarda" alt="mostarda">
+                            <img :src="hamburguer" alt="hamburguer">
+                            <img :src="pao[1]" alt="pao">
+                        </div>
+                    </div>
+                </div>
+                <!-- etapa 1 -->
+                <div class="col-md-6" v-if="etapa == 1">
+                    <!-- TIPO DO PÃO -->
+                    <div class="row mt-2">
+                        <div class="col">
+                            <div class="card" style="width: 18rem;">
+                                <div class="card-header">
+                                    TIPO DO PÃO
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" value="gergelim" v-model="tipoPao">
+                                        <label class="form-check-label">
+                                            Gergelim
+                                        </label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" value="australiano"
+                                            v-model="tipoPao">
+                                        <label class="form-check-label">
+                                            Australiano
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SALADAS -->
+                    <div class="row mt-2">
+                        <div class="col">
+                            <div class="card" style="width: 18rem;">
+                                <div class="card-header">
+                                    TIPO DA SALADA
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="alface" v-model="salada">
+                                        <label class="form-check-label">
+                                            Alface
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- MOLHOS -->
+                    <div class="row mt-2">
+                        <div class="col">
+                            <div class="card" style="width: 18rem;">
+                                <div class="card-header">
+                                    TIPO DO MOLHO
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" value="ketchup"
+                                            v-model="molhos">
+                                        <label class="form-check-label">
+                                            Ketchup
+                                        </label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" value="mostarda"
+                                            v-model="molhos">
+                                        <label class="form-check-label">
+                                            Mostarda
+                                        </label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" value="maionese"
+                                            v-model="molhos">
+                                        <label class="form-check-label">
+                                            Maionese
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- HAMBÚRGUER -->
+                    <div class="row mt-2">
+                        <div class="col">
+                            <div class="card" style="width: 18rem;">
+                                <div class="card-header">
+                                    TIPO DO HAMBÚRGUER
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" value="bovino"
+                                            v-model="tipoHamburguer">
+                                        <label class="form-check-label">
+                                            Bovino
+                                        </label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" value="frango"
+                                            v-model="tipoHamburguer">
+                                        <label class="form-check-label">
+                                            Frango
+                                        </label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" value="soja"
+                                            v-model="tipoHamburguer">
+                                        <label class="form-check-label">
+                                            Soja
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col d-flex justify-content-end">
+                            <button class="btn btn-primary" @click="fazerPedido">Fazer pedido</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- etapa 2 -->
+                <div class="col-md-6" v-if="etapa == 2">
+                    <div class="row mt-2">
+                        <div class="col">
+                            <div class="card" style="width: 18rem;">
+                                <div class="card-header">
+                                    Informe seus dados
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <label for="" class="form-label">Nome</label>
+                                        <input type="text" class="form-control" v-model="nome">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="" class="form-label">Endereço</label>
+                                        <input type="text" class="form-control" v-model="endereco">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-9 d-flex justify-content-between">
+                            <button class="btn btn-warning" @click="etapa = etapa - 1">Voltar</button>
+                            <button class="btn btn-success" @click="finalizarPedido()">Finalizar Pedido</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- etapa 3 -->
+                <div class="col-md-6" v-if="etapa == 3">
+                    <div class="row mt-2">
+                        <div class="col">
+                            <div class="card" style="width: 18rem;">
+                                <div class="card-header bg-success">
+                                    Pedido Confirmado
+                                </div>
+                                <div class="card-body">
+                                    <p>Seu lanche já está em produção.</p>
+                                    <p>Avisaremos quando ficar pronto.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-12 d-flex justify-content-between">
+                            <button class="btn btn-primary" @click="etapa = 1">Repetir pedido</button>
+                            <button class="btn btn-success" @click="novoPedido()">Novo pedido</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const vm = new Vue({
+            el: "#app",
+            data: {
+                tipoPao: '',
+                salada: [],
+                molhos: [],
+                tipoHamburguer: '',
+                etapa: 1,
+                nome: '',
+                endereco: '',
+            },
+            computed: {
+                pao() {
+                    switch (this.tipoPao) {
+
+                        case 'gergelim':
+                            return ["imagens/pao_gergelim_superior.png", "imagens/pao_gergelim_inferior.png"]
+
+                        case 'australiano':
+                            return ["imagens/pao_australiano_superior.png", "imagens/pao_australiano_inferior.png"]
+
+                        default:
+                            return ["imagens/padrao/pao_superior.png", "imagens/padrao/pao_inferior.png"]
+                    }
+                },
+
+                alface() {
+                    if (this.salada.includes('alface')) {
+                        return "imagens/alface.png"
+                    }
+                    return "imagens/padrao/alface.png"
+                },
+
+                ketchup() {
+                    if (this.molhos.includes('ketchup')) {
+                        return "imagens/ketchup.png"
+                    }
+                    return "imagens/padrao/molho.png"
+                },
+
+                maionese() {
+                    if (this.molhos.includes('maionese')) {
+                        return "imagens/maionese.png"
+                    }
+                    return "imagens/padrao/molho.png"
+                },
+
+                mostarda() {
+                    if (this.molhos.includes('mostarda')) {
+                        return "imagens/mostarda.png"
+                    }
+                    return "imagens/padrao/molho.png"
+                },
+
+                hamburguer() {
+                    switch (this.tipoHamburguer) {
+
+                        case 'bovino':
+                            return ["imagens/bovino.png"]
+
+                        case 'frango':
+                            return ["imagens/frango.png"]
+
+                        case 'soja':
+                            return ["imagens/soja.png"]
+
+                        default:
+                            return "imagens/padrao/hamburguer.png"
+                    }
+
+                }
+            },
+
+            methods: {
+                fazerPedido() {
+
+                    if (this.tipoPao && this.tipoHamburguer) {
+                        this.etapa = 2
+                    } else {
+                        alert('Você precisa selecionar pelo menos um pão e um hambúrguer')
+                    }
+                },
+
+                finalizarPedido() {
+                    
+                    if (this.nome && this.endereco) {
+                        this.etapa = 3
+
+                        setTimeout(() => {
+                            alert('Você não finalizou seu pedido. Retornando a página inicial.')
+                            this.novoPedido()
+                        }, 10000)
+                        
+                        //implemetar aqui a requisição para o back-end para de fato fazer o pedido
+                    } else {
+                        alert("Informe seu nome e endereço.")
+                    }
+                },
+
+                novoPedido() {
+                    this.tipoPao = ''
+                    this.salada = []
+                    this.molhos = []
+                    this.tipoHamburguer = ''
+                    this.etapa = 1
+                    this.nome = ''
+                    this.endereco = ''
+                }
+            },
+        })    
+    </script>
 </body>
+
 </html>
